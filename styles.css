@@ -1,0 +1,99 @@
+@import url("https://fonts.googleapis.com/css2?family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+* {
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: black;
+  font-family: "Roboto", sans;
+  flex-direction: column;
+}
+
+H4 {
+  color: white;
+  font-size: 1.5rem;
+}
+
+h2 {
+  color: white;
+  font-size: 2.6rem;
+}
+
+.gameboard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 2rem;
+}
+
+.field {
+  border: 3px solid white;
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 100px;
+}
+
+.field:nth-of-type(1),
+.field:nth-of-type(4),
+.field:nth-of-type(7) {
+  border-left: none;
+}
+
+.field:nth-of-type(1),
+.field:nth-of-type(2),
+.field:nth-of-type(3) {
+  border-top: none;
+}
+.field:nth-of-type(3),
+.field:nth-of-type(6),
+.field:nth-of-type(9) {
+  border-right: none;
+}
+
+.field:nth-of-type(7),
+.field:nth-of-type(8),
+.field:nth-of-type(9) {
+  border-bottom: none;
+}
+
+.start {
+  border: none;
+  background-color: black;
+  color: white;
+  text-transform: uppercase;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.start:hover {
+  text-decoration: underline;
+}
+
+.hidden {
+  display: none;
+}
+
+input {
+  padding: 0.2rem;
+  border-radius: 0.5rem;
+  font-family: inherit;
+  font-weight: bold;
+  border: none;
+}
+
+.menu__bottom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
