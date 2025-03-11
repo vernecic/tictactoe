@@ -22,31 +22,33 @@ let Gameboard = (() => {
   };
 
   const getBoard = () => gameboard;
+
   const updateBoard = (index, symbol) => {
     gameboard[index] = symbol;
   };
+  // so we can use them later
   return {
     displayBoard,
-    getBoard,
     updateBoard,
+    getBoard,
   };
 })();
 
 const playGame = (() => {
   let gameActive = false;
-  let winningCombo = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
+  let winningCombos = [
+    ["0", "1", "2"],
+    ["3", "4", "5"],
+    ["6", "7", "8"],
+    ["0", "3", "6"],
+    ["1", "4", "7"],
+    ["2", "5", "8"],
+    ["0", "4", "8"],
+    ["2", "4", "6"],
   ];
 
   const checkWinner = (board, symbol) => {
-    for (let combo of winningCombo) {
+    for (let combo of winningCombos) {
       let [a, b, c] = combo;
       if (board[a] === symbol && board[b] === symbol && board[c] === symbol) {
         return true;
@@ -55,12 +57,15 @@ const playGame = (() => {
     return false;
   };
 
-  const checkDraw = (board) => {
-    return !board.includes("");
+  const checkDraw = (board, symbol) => {
+    if (!board.includes("")) {
+      return;
+    }
   };
 
   const start = () => {
-    let players = [
+    // players objects
+    const players = [
       {
         name: `${playerOne.value}`,
         symbol: "X",
@@ -70,9 +75,9 @@ const playGame = (() => {
         symbol: "O",
       },
     ];
-
     let curPlayer = 0;
     let gameActive = true;
+
     // display board
     Gameboard.displayBoard();
 
@@ -85,36 +90,6 @@ const playGame = (() => {
     result.textContent = "RESULT:";
 
     // event handling
-    document.querySelectorAll(".field").forEach((field, i) => {
-      field.addEventListener("click", () => {
-        if (field.textContent === "" && gameActive) {
-          const symbol = players[curPlayer].symbol;
-
-          field.textContent = symbol;
-
-          Gameboard.updateBoard(i, symbol);
-
-          const board = Gameboard.getBoard();
-          if (checkWinner(board, symbol)) {
-            result.textContent = `RESULT: ${players[curPlayer].name} wins!`;
-            gameActive = false;
-            return;
-          }
-
-          if (checkTie(board)) {
-            result.textContent = "RESULT: It's a tie!";
-            gameActive = false;
-            return;
-          }
-
-          curPlayer = curPlayer === 0 ? 1 : 0;
-          playerDisplay.textContent = `Current player: ${players[curPlayer].name} - ${players[curPlayer].symbol}`;
-        }
-      });
-    });
-  };
-  return {
-    start,
   };
 })();
 
