@@ -5,6 +5,7 @@ const menu = document.querySelector(".menu");
 const welcome = document.querySelector(".welcome");
 //btns
 const btnStart = document.getElementById("start");
+const btnRestart = document.getElementById("restart");
 
 // players
 const playerOne = document.getElementById("player1");
@@ -15,7 +16,7 @@ let Gameboard = (() => {
 
   const displayBoard = () => {
     let html = "";
-    gameboard.forEach((field) => {
+    gameboard.forEach((field, i) => {
       html += `<div class="field">${field}</div>`;
     });
     document.querySelector(".gameboard").innerHTML = html;
@@ -23,6 +24,7 @@ let Gameboard = (() => {
 
   const getBoard = () => gameboard;
 
+  // tracker
   const updateBoard = (index, symbol) => {
     gameboard[index] = symbol;
   };
@@ -37,14 +39,14 @@ let Gameboard = (() => {
 const playGame = (() => {
   let gameActive = false;
   let winningCombos = [
-    ["0", "1", "2"],
-    ["3", "4", "5"],
-    ["6", "7", "8"],
-    ["0", "3", "6"],
-    ["1", "4", "7"],
-    ["2", "5", "8"],
-    ["0", "4", "8"],
-    ["2", "4", "6"],
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
   ];
 
   const checkWinner = (board, symbol) => {
@@ -57,10 +59,8 @@ const playGame = (() => {
     return false;
   };
 
-  const checkDraw = (board, symbol) => {
-    if (!board.includes("")) {
-      return;
-    }
+  const checkDraw = (board) => {
+    return !board.includes("");
   };
 
   const start = () => {
@@ -90,6 +90,35 @@ const playGame = (() => {
     result.textContent = "RESULT:";
 
     // event handling
+    document.querySelectorAll(".field").forEach((field, i) => {
+      field.addEventListener("click", () => {
+        if (field.textContent === "" && gameActive) {
+          const symbol = players[curPlayer].symbol;
+          field.textContent = symbol;
+          Gameboard.updateBoard(i, symbol);
+
+          const board = Gameboard.getBoard();
+          if (checkWinner(board, symbol)) {
+            result.textContent = `RESULT: ${players[curPlayer].name} WINS!`;
+
+            gameActive = false;
+            btnRestart.classList.remove("hidden");
+            return;
+          }
+          if (checkDraw(board)) {
+            result.textContent = "RESULT: It's a draw!";
+            gameActive = false;
+            btnRestart.classList.remove("hidden");
+            return;
+          }
+          curPlayer = curPlayer === 0 ? 1 : 0;
+          playerDisplay.textContent = `Current player: ${players[curPlayer].name} - ${players[curPlayer].symbol}`;
+        }
+      });
+    });
+  };
+  return {
+    start,
   };
 })();
 
